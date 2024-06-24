@@ -1,0 +1,68 @@
+version: "3.7"
+
+services:
+    # image project
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www:rw
+        depends_on:
+            - redis
+            - psql
+        networks:
+            - laravel
+
+    # nginx
+    nginx:
+        image: nginx:alpine
+        restart: unless-stopped
+        ports:
+            - "8080:80"
+        volumes:
+            - ./:/var/www:rw
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - laravel
+        depends_on:
+            - psql
+
+    # db postgres
+    psql:
+        image: postgres:latest
+        container_name: postgres
+        volumes:
+            - ./postgresql/data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        restart: always
+        environment: 
+            POSTGRES_DB: postgres
+            POSTGRES_USER: root 
+            POSTGRES_PASSWORD: password 
+        networks:
+            - laravel
+
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: pgAdmin
+        ports:
+        - "5050:80"
+        depends_on:
+        - psql 
+        environment:
+            PGADMIN_DEFAULT_EMAIL: luizgabrielfavacho@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: password 
+
+    # redis
+    redis:
+        image: redis:latest
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge
