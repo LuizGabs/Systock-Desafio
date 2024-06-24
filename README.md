@@ -1,7 +1,14 @@
+## Bem vindo ao meu projeto para avaliação na Systock. Utilizei as tecnologias solicitadas e o Docker. Para executar o projeto, você deve ter o Docker instalado em seu computador.
+
 ### Passo a passo
 Clone Repositório
 ```sh
-git clone https://
+git clone https://github.com/LuizGabs/Systock-Desafio.git
+```
+Entre no diretório "Systock-Desafio":
+
+```sh
+cd Systock-Desafio/
 ```
 
 Crie o Arquivo .env
