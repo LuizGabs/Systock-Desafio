@@ -1,4 +1,4 @@
-## Bem vindo ao meu projeto para avaliação na Systock. Utilizei as tecnologias solicitadas e o Docker. Para executar o projeto, você deve ter o Docker instalado em seu computador.
+## Bem vindo ao meu projeto para avaliação na Systock. Utilizei as tecnologias solicitadas, Docker e o NPM. Para executar o projeto, você deve ter o Docker, o Node (NPM) instalados em seu computador.
 
 ### Passo a passo
 Clone Repositório
