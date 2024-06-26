@@ -35,7 +35,7 @@ services:
         image: postgres:latest
         container_name: postgres
         volumes:
-            - ./postgresql/data:/var/lib/postgresql/data
+            - /postgresql/data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
         restart: always

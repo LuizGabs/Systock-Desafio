@@ -16,17 +16,16 @@ Crie o Arquivo .env
 cp .env.example .env
 ```
 
-Instalar algumas dependências do projeto
-```sh
-npm install
-```
-
 
 Suba os containers do projeto
 ```sh
 docker-compose up -d
 ```
 
+Instalar algumas dependências do projeto
+```sh
+npm install
+```
 
 Acessar o container
 ```sh
@@ -39,15 +38,20 @@ Instalar as demais dependências do projeto
 composer install
 ```
 
-
-Gerar a key do projeto Laravel
-```sh
-php artisan key:generate
-```
-
 Realizar as migrações para o banco de dados
 ```sh
 php artisan migrate
+```
+
+Sair do container
+
+```sh
+exit
+```
+
+Executar o servidor local
+```sh
+npm run dev
 ```
 
 Acessar o projeto
