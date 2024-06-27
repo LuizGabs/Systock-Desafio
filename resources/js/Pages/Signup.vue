@@ -165,15 +165,10 @@
         </template>
 
         <template v-slot:actions>
-          <a
-            class="text-blue text-decoration-none"
-            rel="noopener noreferrer"
-            target="_self"
-            href="/"
-          >
-          <v-icon icon="mdi-chevron-left"></v-icon>
-            Retornar ao Login 
-          </a>
+          <v-btn
+          @click="mostrarSucesso = false">
+            Fechar
+          </v-btn>
 
         </template>
       </v-banner>
@@ -253,6 +248,7 @@ import axios from 'axios'
             if(response.status == 201){
               this.mostrarSucesso = true;
               this.mostrarAguarde = false;
+              window.location.href = 'http://localhost:8080/';
             }
         })
         .catch(error => {

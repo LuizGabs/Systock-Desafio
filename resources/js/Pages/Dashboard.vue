@@ -109,7 +109,7 @@ export default {
             axios.get(`/users/${id}/delete`)
             .then(response => {
                 if (response.status == 201){
-                    window.location.href = "/dashboard";
+                    window.location.reload();
                 }
             })
             .catch(error => {

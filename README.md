@@ -49,7 +49,7 @@ Sair do container
 exit
 ```
 
-Executar o servidor local
+Executar o servidor local (Recomendo que execute esse passo em um outro terminal, para caso desejar realizar os passos abaixo.)
 ```sh
 npm run dev
 ```
