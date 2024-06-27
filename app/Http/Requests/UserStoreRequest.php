@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserStoreRequest extends FormRequest
@@ -30,13 +31,13 @@ class UserStoreRequest extends FormRequest
             ],
             'cpf' => [
                 'required',
-                'unique:users,cpf',
-                'digits:11'
+                'digits:11',
+                Rule::unique('users', 'cpf')->ignore($this->user,'id')
             ],
             'email' => [
                 'required',
                 'email',
-                'unique:users,email'
+                Rule::unique('users','email')->ignore($this->user, 'id')
             ],
             'password' => [
                 'required',
@@ -46,7 +47,8 @@ class UserStoreRequest extends FormRequest
             ],
             'phone' => [
                 'nullable',
-                'digits:11'
+                'digits:11',
+                Rule::unique('users','phone')->ignore($this->user, 'id')
             ]
         ];
     }

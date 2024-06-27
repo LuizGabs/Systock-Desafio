@@ -15,10 +15,16 @@ class LoginUserController extends Controller
             $request->session()->regenerate();
  
             //return redirect()->intended('dashboard');
-            return 'deu certo';
+            return redirect('/dashboard');
         }
         else{
             return response()->json(['message' => 'Credenciais Inválidas'], 401);
         }
+    }
+
+    public function getAuthUser(){
+        $user = Auth::user();
+
+        return response()->json($user);
     }
 }

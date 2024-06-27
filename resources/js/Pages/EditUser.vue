@@ -3,11 +3,11 @@
     <v-card
       class="mx-auto bg-red-lighten-1"
       prepend-icon="$vuetify"
-      subtitle="Seja bem vindo! Faça seu cadastro agora mesmo!"
+      subtitle="Tela de Edição"
       width="auto"
     >
       <template v-slot:title>
-        <span class="font-weight-black">Tela de Cadastro</span>
+        <span class="font-weight-black">Editar usuário: {{ user.name }}</span>
       </template>
 
     </v-card>
@@ -22,9 +22,9 @@
   
         <v-text-field
             id="name"
-            v-model="name"
+            v-model="formData.name"
+            placeholder="Digite o nome"
             density="compact"
-            placeholder="Digite seu nome"
             prepend-inner-icon="mdi-account"
             :rules = "[rules.required, rules.name]"
             variant="outlined"
@@ -34,9 +34,9 @@
   
         <v-text-field
           id="email"
-          v-model="email"
+          v-model="formData.email"
           density="compact"
-          placeholder="Digite seu Email"
+          placeholder="Digite o Email"
           prepend-inner-icon="mdi-email"
           :rules = "[rules.required, rules.email]"
           variant="outlined"
@@ -46,10 +46,10 @@
   
         <v-text-field
             id="phone"
-            v-model="phone"
+            v-model="formData.phone"
             type="text"
             density="compact"
-            placeholder="Digite seu Telefone (Opcional)"
+            placeholder="Digite o Telefone (Opcional)"
             prepend-inner-icon="mdi-phone"
             variant="outlined"
             :rules = "[rules.phone]"
@@ -59,10 +59,10 @@
   
         <v-text-field
             id="cpf"
-            v-model="cpf"
+            v-model="formData.cpf"
             type="text"
             density="compact"
-            placeholder="Digite seu CPF"
+            placeholder="Digite o CPF"
             prepend-inner-icon="mdi-card-account-details"
             variant="outlined"
             :rules = "[rules.required, rules.cpf]"
@@ -75,11 +75,11 @@
   
         <v-text-field
           id="password"
-          v-model="password"
+          v-model="formData.password"
           :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
           :type="visible ? 'text' : 'password'"
           density="compact"
-          placeholder="Digite sua senha"
+          placeholder="Digite a senha"
           prepend-inner-icon="mdi-lock-outline"
           variant="outlined"
           :rules = "[rules.required, rules.password]"
@@ -92,10 +92,10 @@
           color="blue"
           size="large"
           variant="tonal"
-          @click ="cadastro()"
+          @click ="update()"
           block
         >
-          Cadastrar
+          Atualizar
         </v-btn>
   
         <v-card-text class="text-center">
@@ -103,10 +103,10 @@
             class="text-blue text-decoration-none"
             rel="noopener noreferrer"
             target="_self"
-            href="/"
+            href="/dashboard"
           >
           <v-icon icon="mdi-chevron-left"></v-icon>
-            Retornar ao Login 
+            Retornar ao Dashboard 
           </a>
         </v-card-text>
       </v-card>
@@ -119,7 +119,7 @@
         max-heigth="auto"
       >
         <template v-slot:text>
-          Erro na criação do Usuário. Verifique suas credenciais e tente novamente.
+          Erro na atualização do Usuário. Verifique as credenciais e tente novamente.
         </template>
 
         <template v-slot:actions>
@@ -161,20 +161,14 @@
         max-heigth="auto"
       >
         <template v-slot:text>
-          Usuário criado com sucesso!
+          Usuário atualizado com sucesso!
         </template>
 
         <template v-slot:actions>
-          <a
-            class="text-blue text-decoration-none"
-            rel="noopener noreferrer"
-            target="_self"
-            href="/"
-          >
-          <v-icon icon="mdi-chevron-left"></v-icon>
-            Retornar ao Login 
-          </a>
-
+          <v-btn
+          @click="mostrarSucesso = false">
+            Fechar
+          </v-btn>
         </template>
       </v-banner>
 
@@ -187,7 +181,7 @@
         max-heigth="auto"
       >
         <template v-slot:text>
-          Processando seu cadastro, aguarde.
+          Processando a solicitação, aguarde.
         </template>
 
         <template v-slot:actions>
@@ -202,15 +196,19 @@
 </template>
 
 <script>
-import axios from 'axios'
-  export default {
+import axios from 'axios';
+
+
+export default{
     data: () => ({
       visible: false,
-      name: '',
-      email: '',
-      cpf: '',
-      password: '',
-      phone: '',
+      formData: {
+        name: '',
+        email: '',
+        cpf: '',
+        password: '',
+        phone: ''
+      },
       mostrarErro: false,
       mostrarErroServidor: false,
       mostrarSucesso: false,
@@ -239,33 +237,46 @@ import axios from 'axios'
           }
       },
     }),
-    methods:{
-      cadastro() {
-        this.mostrarAguarde = true;
-        axios.post('http://localhost:8080/signup', {
-            name: this.name,
-            email: this.email,
-            cpf: this.cpf,
-            password: this.password,
-            phone: this.phone,
-        })
-        .then(response => {
-            if(response.status == 201){
-              this.mostrarSucesso = true;
-              this.mostrarAguarde = false;
-            }
-        })
-        .catch(error => {
-            if(error.response.status == 422){
-              this.mostrarErro = true;
-              this.mostrarAguarde = false;
-            }
-            else{
-              this.mostrarErroServidor = true;
-              this.mostrarAguarde = false;
-            }
-        });
-      },
+    props: {
+        user: Object // Recebe o usuário como propriedade
     },
-  }
+    mounted() {
+        // Inicializa os dados do formulário com os dados do usuário recebido
+        this.formData.name = this.user.name;
+        this.formData.email = this.user.email;
+        this.formData.cpf = this.user.cpf;
+        this.formData.phone = this.user.phone;
+    },
+    methods : {
+        update(){
+            this.mostrarAguarde = true;
+            axios.put(`/users/${this.user.id}`,{
+                    name: this.formData.name,
+                    email: this.formData.email,
+                    cpf: this.formData.cpf,
+                    password:  this.formData.password,
+                    phone: this.formData.phone
+                })
+                .then(response => {
+                    if(response.status == 201){
+                        this.mostrarSucesso = true;
+                        this.mostrarAguarde = false;
+                        window.location.href = '/dashboard';
+                    }
+                })
+                .catch(error => {
+                    if(error.response.status == 422){
+                        this.mostrarErro = true;
+                        this.mostrarAguarde = false;
+                        console.log(error);
+                    }
+                    else{
+                        this.mostrarErroServidor = true;
+                        this.mostrarAguarde = false;
+                    }
+                });
+        }
+    },
+}
+
 </script>

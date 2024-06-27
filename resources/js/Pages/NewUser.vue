@@ -3,7 +3,7 @@
     <v-card
       class="mx-auto bg-red-lighten-1"
       prepend-icon="$vuetify"
-      subtitle="Seja bem vindo! Faça seu cadastro agora mesmo!"
+      subtitle="Novo Usuário"
       width="auto"
     >
       <template v-slot:title>
@@ -24,7 +24,7 @@
             id="name"
             v-model="name"
             density="compact"
-            placeholder="Digite seu nome"
+            placeholder="Digite o nome"
             prepend-inner-icon="mdi-account"
             :rules = "[rules.required, rules.name]"
             variant="outlined"
@@ -36,7 +36,7 @@
           id="email"
           v-model="email"
           density="compact"
-          placeholder="Digite seu Email"
+          placeholder="Digite o Email"
           prepend-inner-icon="mdi-email"
           :rules = "[rules.required, rules.email]"
           variant="outlined"
@@ -49,7 +49,7 @@
             v-model="phone"
             type="text"
             density="compact"
-            placeholder="Digite seu Telefone (Opcional)"
+            placeholder="Digite o Telefone (Opcional)"
             prepend-inner-icon="mdi-phone"
             variant="outlined"
             :rules = "[rules.phone]"
@@ -62,7 +62,7 @@
             v-model="cpf"
             type="text"
             density="compact"
-            placeholder="Digite seu CPF"
+            placeholder="Digite o CPF"
             prepend-inner-icon="mdi-card-account-details"
             variant="outlined"
             :rules = "[rules.required, rules.cpf]"
@@ -79,7 +79,7 @@
           :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
           :type="visible ? 'text' : 'password'"
           density="compact"
-          placeholder="Digite sua senha"
+          placeholder="Digite a senha"
           prepend-inner-icon="mdi-lock-outline"
           variant="outlined"
           :rules = "[rules.required, rules.password]"
@@ -103,10 +103,10 @@
             class="text-blue text-decoration-none"
             rel="noopener noreferrer"
             target="_self"
-            href="/"
+            href="/dashboard"
           >
           <v-icon icon="mdi-chevron-left"></v-icon>
-            Retornar ao Login 
+            Retornar ao Dashboard 
           </a>
         </v-card-text>
       </v-card>
@@ -119,7 +119,7 @@
         max-heigth="auto"
       >
         <template v-slot:text>
-          Erro na criação do Usuário. Verifique suas credenciais e tente novamente.
+          Erro na criação do Usuário. Verifique as credenciais e tente novamente.
         </template>
 
         <template v-slot:actions>
@@ -165,16 +165,10 @@
         </template>
 
         <template v-slot:actions>
-          <a
-            class="text-blue text-decoration-none"
-            rel="noopener noreferrer"
-            target="_self"
-            href="/"
-          >
-          <v-icon icon="mdi-chevron-left"></v-icon>
-            Retornar ao Login 
-          </a>
-
+          <v-btn
+          @click="mostrarSucesso = false">
+            Fechar
+          </v-btn>
         </template>
       </v-banner>
 
@@ -187,7 +181,7 @@
         max-heigth="auto"
       >
         <template v-slot:text>
-          Processando seu cadastro, aguarde.
+          Processando o cadastro, aguarde.
         </template>
 
         <template v-slot:actions>
@@ -242,7 +236,7 @@ import axios from 'axios'
     methods:{
       cadastro() {
         this.mostrarAguarde = true;
-        axios.post('http://localhost:8080/signup', {
+        axios.post('http://localhost:8080/newuser', {
             name: this.name,
             email: this.email,
             cpf: this.cpf,
@@ -253,6 +247,7 @@ import axios from 'axios'
             if(response.status == 201){
               this.mostrarSucesso = true;
               this.mostrarAguarde = false;
+              window.location.href = '/dashboard';
             }
         })
         .catch(error => {

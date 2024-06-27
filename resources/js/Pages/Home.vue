@@ -170,6 +170,11 @@ import axios from 'axios';
         .then(response =>{
           console.log(response);
           this.mostrarAguarde = false;
+
+          if(response.status == 200){
+            window.location.href = '/dashboard'
+          }
+
         })
         .catch(error => {
           if(error.response.status == 401 || error.response.status == 422){
