@@ -56,3 +56,27 @@ npm run dev
 
 Acessar o projeto
 [http://localhost:8080](http://localhost:8080)
+
+## Observação: pelo projeto estar rodando inteiramente no Docker, as ações demoram um pouco para serem concluídas, após clicar em um botão, ou acessar alguma página, aguarde um instante para obter a resposta. Todas as operações CRUD estão sendo feitas e para ter acesso ao Dashboard, é necessário se cadastrar no sistema. Basta clicar no botão "Cadastre-se", efetuar o cadastro, e você terá acesso ao Dashboard. Como o Laravel fornece a criação de usuários fake, é possível gerar vários usuários, para fins de visualização das operações CRUD, ou criar usuários manualmente. Para o laravel gerar usuários fake, siga os passos abaixo:
+
+Acesse o container
+```sh
+docker-compose exec app bash
+```
+
+Acesse o Tinker
+```sh
+php artisan tinker
+```
+
+Gere os usuários
+```sh
+ \App\Models\User::factory()->create();
+ ```
+
+ Ou para gerar uma quantidade X de usuários, execute:
+ ```sh
+  \App\Models\User::factory()->count(X)->create();
+``` 
+
+No lugar do X, insira a quantidade desejada.
